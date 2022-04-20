@@ -1,3 +1,5 @@
+// Author: Vedant Vrattikoppa
+
 const len = 45, breadth = 45; // number of tiles in maze
 const cellWidth = 10, borderWidth = 5;
 const width = len * (cellWidth + borderWidth) + borderWidth;
