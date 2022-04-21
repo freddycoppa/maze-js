@@ -1,6 +1,6 @@
 // Author: Vedant Vrattikoppa
 
-const len = 45, breadth = 45; // number of tiles in maze
+const len = 50, breadth = 50; // number of tiles in maze
 const cellWidth = 10, borderWidth = 5;
 const width = len * (cellWidth + borderWidth) + borderWidth;
 const height = breadth * (cellWidth + borderWidth) + borderWidth;
@@ -18,8 +18,6 @@ for (let x = 0; x < len; x++) {
         };
     }
 }
-
-let start = maze[0][0]; 
 
 const main = document.createElement("div");
 main.id = "main";
@@ -74,21 +72,6 @@ for (let x = 0; x < len; x++) {
     }
 }
 
-function reset() {
-    for (let x = 0; x < len; x++) for (let y = 0; y < breadth; y++) {
-        maze[x][y].parent = null;
-        maze[x][y].children = [];
-        maze[x][y].visited = false;
-        maze[x][y].cell.style.backgroundColor = "white";
-        if (x < len - 1) maze[x][y].rightBorder.style.backgroundColor = "black";
-        if (y < breadth - 1) maze[x][y].downBorder.style.backgroundColor = "black";
-    }
-
-    maze[0][0].cell.style.backgroundColor = "green";
-    maze[len - 1][breadth - 1].cell.style.backgroundColor = "green";
-}
-
-
 function colorBetween(cell0, cell1, color) {
     function colorBorder(cell, border) {
         maze[cell.x][cell.y][border + "Border"].style.backgroundColor = color;
@@ -104,12 +87,31 @@ function colorBetween(cell0, cell1, color) {
     }    
 }
 
+function randomChoice(array) {
+    return array[Math.floor(Math.random() * array.length)];
+}
+
+function reset() {
+    for (let x = 0; x < len; x++) for (let y = 0; y < breadth; y++) {
+        maze[x][y].parent = null;
+        maze[x][y].children = [];
+        maze[x][y].visited = false;
+        maze[x][y].cell.style.backgroundColor = "white";
+        if (x < len - 1) maze[x][y].rightBorder.style.backgroundColor = "black";
+        if (y < breadth - 1) maze[x][y].downBorder.style.backgroundColor = "black";
+    }
+}
+
+let start, end;
+
 function generate() {
     reset();
+    start = randomChoice(randomChoice(maze));
     let current = start;
+    const leaves = [];
     while (current) {
         current.visited = true;
-        possibleNodes = [];
+        const possibleNodes = [];
 
         function pushIfNotVisited(node) {if (!node.visited) possibleNodes.push(node);}
 
@@ -118,23 +120,34 @@ function generate() {
         if (current.y + 1 < breadth) pushIfNotVisited(maze[current.x][current.y + 1]);
         if (current.y - 1 > -1) pushIfNotVisited(maze[current.x][current.y - 1]);
 
-        if (possibleNodes.length == 0) current = current.parent;
+        if (possibleNodes.length == 0) {
+            if (current.children.length == 0) leaves.push(current);
+            current = current.parent;
+        }
         else {
-            let choice = possibleNodes[Math.floor(Math.random() * possibleNodes.length)];
+            let choice = randomChoice(possibleNodes);
             current.children.push(choice);
             choice.parent = current;
             colorBetween(current, choice, "white");
             current = choice;
         }
     }
+    end = randomChoice(leaves);
+
+    start.cell.style.backgroundColor = "green";
+    end.cell.style.backgroundColor = "green";
 }
 
+let color = "white";
+
 function solve() {
-    let node = maze[len - 1][breadth - 1];
+    if (color == "white") color = "red";
+    else color = "white";
+    let node = end;
     while (node.parent) {
-        colorBetween(node, node.parent, "red");
+        colorBetween(node, node.parent, color);
         node = node.parent;
-        node.cell.style.backgroundColor = "red";
+        node.cell.style.backgroundColor = color;
     }
     node.cell.style.backgroundColor = "green";
 }
