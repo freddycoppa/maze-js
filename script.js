@@ -7,12 +7,22 @@ const height = breadth * (cellWidth + borderWidth) + borderWidth;
 
 const maze = [];
 let begin, end;
+// initialize maze
+for (let x = 0; x < len; x++) {
+    maze[x] = [];
+    for (let y = 0; y < breadth; y++) {
+        maze[x][y] = {
+            x: x,
+            y: y
+        };
+    }
+}
 
 let blockEvents = false, blockSelect = true;
 
 let selectState = {
 	which: "none",
-	div: document.createElement("div"),
+	div: document.getElementById("msg"),
 	select: function(which) {
 		this.which = which;
 		if (which == "begin") this.div.textContent = "Select Starting Point";
@@ -25,13 +35,9 @@ let selectState = {
 };
 
 const body = document.querySelector("body");
-
-const timeout = 16;
-
+const timeout = 0;
 const pathColor = "blue";
-
 let color = "white";
-
 
 
 function colorBetween(cell0, cell1, color) {
@@ -143,7 +149,6 @@ function getPath() {
 }
 
 
-
 // event handlers
 
 document.onkeydown = event => {
@@ -199,27 +204,14 @@ body.onclick = e => {
 };
 
 
+// initialize graphics
 
-// initialize maze
-
-for (let x = 0; x < len; x++) {
-    maze[x] = [];
-    for (let y = 0; y < breadth; y++) {
-        maze[x][y] = {
-            x: x,
-            y: y
-        };
-    }
-}
-
-const main = document.createElement("div");
-main.id = "main";
+const main = document.getElementById("maze");
 main.style.width = width + 'px';
 main.style.height = height + 'px';
 main.style.backgroundColor = "black";
 main.style.margin = "auto";
 main.style.position = "relative";
-body.appendChild(main);
 
 for (let x = 0; x < len; x++) {
     for (let y = 0; y < breadth; y++) {
@@ -282,5 +274,3 @@ for (let x = 0; x < len; x++) {
         }
     }
 }
-
-body.appendChild(selectState.div);
