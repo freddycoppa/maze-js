@@ -35,7 +35,7 @@ let selectState = {
 };
 
 const body = document.querySelector("body");
-const timeout = 0;
+const timeout = 16;
 const pathColor = "blue";
 let color = "white";
 
