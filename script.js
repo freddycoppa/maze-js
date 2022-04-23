@@ -1,7 +1,7 @@
 // Author: Vedant Vrattikoppa
 
 const len = 50, breadth = 50; // number of tiles in maze
-const cellWidth = 7, borderWidth = 1;
+const cellWidth = 5, borderWidth = 1;
 const width = len * (cellWidth + borderWidth) + borderWidth;
 const height = breadth * (cellWidth + borderWidth) + borderWidth;
 
