@@ -125,13 +125,14 @@ function clear() {
 }
 
 function getPath() {
-	function makeRoot(node, parent=null) {
-		if (!node) return;
-		makeRoot(node.parent, node);
-		node.parent = parent;
+	let prev;
+	let node = end;
+	while (node) {
+		let parent = node.parent;
+		node.parent = prev;
+		prev = node;
+		node = parent;
 	}
-
-	makeRoot(end);	
 
 	function drawPath(node) {
 		if (!node.parent) {
@@ -143,7 +144,6 @@ function getPath() {
 		setTimeout(drawPath, timeout, node.parent);
 	}
 
-	
 	blockEvents = true;
 	drawPath(begin);
 }
