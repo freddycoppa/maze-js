@@ -1,2 +1,2 @@
 # maze-js
-Maze generation using recursive backtracking and solving using breadth-first search
+Maze generation using recursive backtracking and pathfinding using breadth-first search
